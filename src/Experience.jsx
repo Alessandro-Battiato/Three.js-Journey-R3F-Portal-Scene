@@ -4,10 +4,24 @@ import {
     OrbitControls,
     useGLTF,
     useTexture,
+    shaderMaterial,
 } from "@react-three/drei";
+import { extend } from "@react-three/fiber";
 import * as THREE from "three";
 import portalVertexShader from "./shaders/portal/vertex.glsl";
 import portalFragmentShader from "./shaders/portal/fragment.glsl";
+
+const PortalMaterial = shaderMaterial(
+    {
+        uTime: 0,
+        uColorStart: new THREE.Color("#ffffff"),
+        uColorEnd: new THREE.Color("#000000"),
+    },
+    portalVertexShader,
+    portalFragmentShader
+);
+
+extend({ PortalMaterial }); // We are basically creating a new PortalMaterial tag in react three fiber
 
 export default function Experience() {
     const { nodes } = useGLTF("./model/portal.glb");
@@ -45,15 +59,20 @@ export default function Experience() {
                     position={nodes.portalLight.position}
                     rotation={nodes.portalLight.rotation}
                 >
-                    <shaderMaterial
-                        vertexShader={portalVertexShader}
-                        fragmentShader={portalFragmentShader}
-                        uniforms={{
-                            uTime: { value: 0 },
-                            uColorStart: { value: new THREE.Color("#ffffff") },
-                            uColorEnd: { value: new THREE.Color("#000000") },
-                        }}
-                    />
+                    {/*
+                        <shaderMaterial
+                            vertexShader={portalVertexShader}
+                            fragmentShader={portalFragmentShader}
+                            uniforms={{
+                                uTime: { value: 0 },
+                                uColorStart: { value: new THREE.Color("#ffffff") },
+                                uColorEnd: { value: new THREE.Color("#000000") },
+                            }}
+                        />
+                    */}
+
+                    {/*IMPORTANT: No clue why but even though you called it PortalMaterial, it doesn't work as <PortalMaterial />*/}
+                    <portalMaterial />
                 </mesh>
 
                 <Sparkles
