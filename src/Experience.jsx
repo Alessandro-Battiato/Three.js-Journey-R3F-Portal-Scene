@@ -6,7 +6,8 @@ import {
     useTexture,
     shaderMaterial,
 } from "@react-three/drei";
-import { extend } from "@react-three/fiber";
+import { extend, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 import * as THREE from "three";
 import portalVertexShader from "./shaders/portal/vertex.glsl";
 import portalFragmentShader from "./shaders/portal/fragment.glsl";
@@ -28,6 +29,12 @@ export default function Experience() {
 
     const bakedTexture = useTexture("./model/baked.jpg");
     bakedTexture.flipY = false; // fixes the flipped texture
+
+    const portalMaterial = useRef(null);
+
+    useFrame((state, delta) => {
+        portalMaterial.current.uTime += delta;
+    });
 
     return (
         <>
@@ -72,7 +79,7 @@ export default function Experience() {
                     */}
 
                     {/*IMPORTANT: No clue why but even though you called it PortalMaterial, it doesn't work as <PortalMaterial />*/}
-                    <portalMaterial />
+                    <portalMaterial ref={portalMaterial} />
                 </mesh>
 
                 <Sparkles
