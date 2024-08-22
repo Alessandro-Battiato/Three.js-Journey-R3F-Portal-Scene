@@ -30,6 +30,12 @@ export default function Experience() {
                 >
                     <meshBasicMaterial color="#ffffe5" />
                 </mesh>
+
+                <mesh
+                    geometry={nodes.portalLight.geometry}
+                    position={nodes.portalLight.position}
+                    rotation={nodes.portalLight.rotation}
+                ></mesh>
             </Center>
         </>
     );
